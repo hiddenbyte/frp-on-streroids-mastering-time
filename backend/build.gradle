@@ -1,0 +1,15 @@
+group 'backend'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "io.reactivex:rxnetty-http:0.5.2"
+    compile "io.reactivex:rxnetty-common:0.5.2"
+}

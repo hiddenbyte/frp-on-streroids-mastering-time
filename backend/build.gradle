@@ -10,7 +10,6 @@ repositories {
 }
 
 dependencies {
-    compile "io.reactivex:rxnetty-http:0.5.2"
-    compile "io.reactivex:rxnetty-common:0.5.2"
+    compile "io.vertx:vertx-rx-java:3.4.1"
     compile "org.slf4j:slf4j-log4j12:${slf4j_version}"
 }

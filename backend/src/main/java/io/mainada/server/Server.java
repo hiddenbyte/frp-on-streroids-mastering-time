@@ -10,6 +10,8 @@ import io.vertx.rxjava.core.eventbus.Message;
 import io.vertx.rxjava.core.http.HttpServer;
 import io.vertx.rxjava.core.http.HttpServerRequest;
 import io.vertx.rxjava.core.http.HttpServerResponse;
+import io.vertx.rxjava.ext.web.Router;
+import io.vertx.rxjava.ext.web.handler.CorsHandler;
 import rx.Single;
 
 public class Server extends AbstractVerticle {
@@ -20,6 +22,12 @@ public class Server extends AbstractVerticle {
     @Override
     public void start() {
         HttpServer server = vertx.createHttpServer();
+
+        final Router router = Router.router(vertx);
+
+        router.route().handler(CorsHandler.create("*"));
+
+        server.requestHandler(router::accept);
 
         server.requestStream()
                 .toObservable()

@@ -26,7 +26,7 @@ public class Server extends AbstractVerticle {
         final Router router = Router.router(vertx);
 
         router.route().handler(CorsHandler.create("*"));
-        router.route().handler(a -> handleRequest(a));
+        router.route().handler(this::handleRequest);
 
         server
                 .requestHandler(router::accept)

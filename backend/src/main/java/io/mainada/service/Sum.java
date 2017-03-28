@@ -31,7 +31,8 @@ public class Sum extends AbstractVerticle {
         final JsonArray body = message.body();
 
         Flowable.fromIterable(body)
-                .cast(Double.class)
+                .cast(String.class)
+                .map(Double::valueOf)
                 .reduce(0.0d, (acc, ele) -> acc + ele)
                 .map(result -> new JsonObject().put("result", result))
                 .subscribe(message::reply, error -> LOGGER.error("Something went wrong during the sum.", error));

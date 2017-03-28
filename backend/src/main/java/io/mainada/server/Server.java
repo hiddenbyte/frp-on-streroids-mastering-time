@@ -8,9 +8,9 @@ import io.vertx.rxjava.core.AbstractVerticle;
 import io.vertx.rxjava.core.buffer.Buffer;
 import io.vertx.rxjava.core.eventbus.Message;
 import io.vertx.rxjava.core.http.HttpServer;
-import io.vertx.rxjava.core.http.HttpServerRequest;
 import io.vertx.rxjava.core.http.HttpServerResponse;
 import io.vertx.rxjava.ext.web.Router;
+import io.vertx.rxjava.ext.web.RoutingContext;
 import io.vertx.rxjava.ext.web.handler.CorsHandler;
 import rx.Single;
 
@@ -26,27 +26,24 @@ public class Server extends AbstractVerticle {
         final Router router = Router.router(vertx);
 
         router.route().handler(CorsHandler.create("*"));
+        router.route().handler(a -> handleRequest(a));
 
-        server.requestHandler(router::accept);
-
-        server.requestStream()
-                .toObservable()
-                .subscribe(this::handleRequest);
-
-        server.rxListen(PORT)
+        server
+                .requestHandler(router::accept)
+                .rxListen(PORT)
                 .subscribe(
                         success -> LOGGER.info("Server started successfully."),
                         error -> LOGGER.error("Server failed to start.", error)
                 );
     }
 
-    private void handleRequest(final HttpServerRequest req) {
+    private void handleRequest(final RoutingContext req) {
         LOGGER.info("Received cell.");
 
         final HttpServerResponse resp = req.response()
                 .setChunked(true);
 
-        req.toObservable()
+        req.request().toObservable()
                 .map(Buffer::toJsonObject)
                 .map(this::sendEventBusMessage)
                 .flatMap(Single::toObservable)

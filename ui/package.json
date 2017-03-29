@@ -4,6 +4,7 @@
   "description": "frp-on-streroids-mastering-time",
   "main": "index.js",
   "scripts": {
+    "build" : "webpack webpack.config.js && open index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

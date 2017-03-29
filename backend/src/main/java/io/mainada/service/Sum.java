@@ -1,6 +1,6 @@
 package io.mainada.service;
 
-import io.reactivex.Flowable;
+import io.reactivex.Observable;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
@@ -30,10 +30,15 @@ public class Sum extends AbstractVerticle {
     private void handleMessage(final Message<JsonArray> message) {
         final JsonArray body = message.body();
 
-        Flowable.fromIterable(body)
+        Observable.fromIterable(body)
                 .cast(String.class)
                 .map(Double::valueOf)
-                .reduce(0.0d, (acc, ele) -> acc + ele)
+                .map(a -> a)
+                .onErrorResumeNext(error -> {
+                    LOGGER.error("Received an invalid number");
+                    return Observable.just(1.0);
+                })
+                .reduce(0.0, (acc, ele) -> acc + ele)
                 .map(result -> new JsonObject().put("result", result))
                 .subscribe(message::reply, error -> LOGGER.error("Something went wrong during the sum.", error));
     }

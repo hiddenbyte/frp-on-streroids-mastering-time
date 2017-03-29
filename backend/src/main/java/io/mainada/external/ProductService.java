@@ -9,6 +9,8 @@ import io.vertx.rxjava.core.http.HttpServer;
 import io.vertx.rxjava.core.http.HttpServerRequest;
 import io.vertx.rxjava.core.http.HttpServerResponse;
 
+import static rx.Observable.just;
+
 public class ProductService extends AbstractVerticle {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductService.class);
@@ -26,8 +28,6 @@ public class ProductService extends AbstractVerticle {
     }
 
     private void handleRequest(final HttpServerRequest req) {
-        LOGGER.info("Received cell.");
-
         final HttpServerResponse resp = req.response()
                 .setChunked(true);
 
@@ -35,7 +35,11 @@ public class ProductService extends AbstractVerticle {
                 .flatMapIterable(Buffer::toJsonArray)
                 .cast(String.class)
                 .map(Double::valueOf)
-                .reduce(1.0d, (acc, ele) -> acc * ele)
+                .onErrorResumeNext(error -> {
+                    LOGGER.error("Received an invalid number");
+                    return just(1.0);
+                })
+                .reduce(1.0, (acc, ele) -> acc * ele)
                 .map(result -> new JsonObject().put("result", result))
                 .map(JsonObject::encode)
                 .subscribe(

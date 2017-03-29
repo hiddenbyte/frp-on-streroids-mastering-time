@@ -34,8 +34,8 @@ public class Sum extends AbstractVerticle {
                 .cast(String.class)
                 .map(Double::valueOf)
                 .onErrorResumeNext(error -> {
-                    LOGGER.error("Received an invalid number");
-                    return Observable.just(1.0);
+                    LOGGER.error("Received an invalid number " + Thread.currentThread());
+                    return Observable.just(0.0);
                 })
                 .reduce(0.0, (acc, ele) -> acc + ele)
                 .map(result -> new JsonObject().put("result", result))

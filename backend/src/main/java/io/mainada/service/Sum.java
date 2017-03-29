@@ -33,7 +33,6 @@ public class Sum extends AbstractVerticle {
         Observable.fromIterable(body)
                 .cast(String.class)
                 .map(Double::valueOf)
-                .map(a -> a)
                 .onErrorResumeNext(error -> {
                     LOGGER.error("Received an invalid number");
                     return Observable.just(1.0);

@@ -14,6 +14,8 @@ import io.vertx.rxjava.ext.web.RoutingContext;
 import io.vertx.rxjava.ext.web.handler.CorsHandler;
 import rx.Single;
 
+import static io.netty.handler.codec.http.HttpResponseStatus.BAD_REQUEST;
+
 public class Server extends AbstractVerticle {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Server.class);
@@ -53,7 +55,7 @@ public class Server extends AbstractVerticle {
                         resp::write,
                         error -> {
                             LOGGER.error("Failed to handle request.", error);
-                            resp.setStatusCode(401).end();
+                            resp.setStatusCode(BAD_REQUEST.code()).end();
                         },
                         resp::end
                 );

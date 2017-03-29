@@ -40,7 +40,7 @@ public class Server extends AbstractVerticle {
     }
 
     private void handleRequest(final RoutingContext req) {
-        LOGGER.info("Received cell.");
+        LOGGER.info("Received function on thread " + Thread.currentThread());
 
         final HttpServerResponse resp = req.response()
                 .setChunked(true);

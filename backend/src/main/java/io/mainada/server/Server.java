@@ -51,13 +51,16 @@ public class Server extends AbstractVerticle {
                 .map(JsonObject::encode)
                 .subscribe(
                         resp::write,
-                        error -> LOGGER.error("Failed to handle request.", error),
+                        error -> {
+                            LOGGER.error("Failed to handle request.", error);
+                            resp.setStatusCode(401).end();
+                        },
                         resp::end
                 );
     }
 
     private Single<Message<JsonObject>> sendEventBusMessage(final JsonObject body) {
-        final JsonArray parameters = body.getJsonArray("parameters");
+        final JsonArray parameters = body.getJsonArray("parameters", new JsonArray());
         final String function = body.getString("function");
         return vertx.eventBus().rxSend(function, parameters);
     }

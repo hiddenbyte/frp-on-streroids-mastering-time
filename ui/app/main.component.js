@@ -2,9 +2,6 @@ import Rx from 'rxjs/Rx';
 import { buildComponent, rootComponent } from './component';
 import { cellComponent } from './cell.component';
 import { requestComputation } from './http';
-import { Store } from './store';
-
-const store = new Store();
 
 function loadParameter(parameter, cellChanges) {
   if (isNaN(parameter)) {
@@ -76,10 +73,11 @@ const mainComponent = buildComponent({
       .filter(change => !change.computed)
       .mergeMap(change => compute(change, changes))
       .subscribe(computed => {
+          console.log(computed);
           const cell = cells.find(cell => cell._id === computed.cellId);
           cell._setValue(computed.value);
           cell._clearDepedentCellSub(computed.changeRequest, changes, cells);
-          
+
           if (computed.dependentCells.length > 0) {
             cell._setDepedentCellSub(createDependentCellObservableSub(computed.change, changes, cells));
           }

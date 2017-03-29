@@ -32,7 +32,6 @@ public class ProductService extends AbstractVerticle {
                 .setChunked(true);
 
         req.toObservable()
-                .map(a -> a)
                 .flatMapIterable(Buffer::toJsonArray)
                 .cast(String.class)
                 .map(Double::valueOf)

@@ -14,9 +14,10 @@ export function rootComponent(childrenComponents = []) {
 };
 
 export function buildComponent(definition) {
-  return (childrenComponents = []) => {
+  return (state, childrenComponents = []) => {
     const componentElement = document.createElement('div');
-    componentElement.innerHTML = definition.html;
+    componentElement.innerHTML = definition.html(state);
+    componentElement.className = definition.class;
     const component = { elem : componentElement, childrens : childrenComponents };
 
     childrenComponents
@@ -25,7 +26,7 @@ export function buildComponent(definition) {
         children.parent = component;
       });
 
-    definition.oninit(component);
+    definition.oninit(component, state);
 
     return component;
   };

@@ -4,7 +4,7 @@ import { parseCellValue } from './utils';
 
 export const cellComponent = buildComponent({
   class: 'cell',
-  html: (state) => `<input type="text" id="cell_${state.id}"></input>`,
+  html: (state) => `<fieldset>    <legend>${state.id}</legend> <input type="text" id="cell_${state.id}"></input></fieldset>`,
   oninit: (component, state) => {
     component._id = state.id;
 
@@ -23,6 +23,8 @@ export const cellComponent = buildComponent({
     component._setValue = function(value) {
       component._input.value = value;
       component.changeBehaviorSubject.next(Object.assign({ cellId : state.id, computed: true  }, parseCellValue(value)));
+      component._input.classList.add('highlighted');
+      setTimeout(() => component._input.classList.remove('highlighted'), 100);
     };
 
     component._setDepedentCellSub = function(subscription) {

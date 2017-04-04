@@ -5,10 +5,22 @@
       .sheet {
         display: flex;
         flex-wrap: wrap;
-        width: 50%;
+        width: 100%;
       }
       .cell  {
         width: 25%;
+        border: 1 solid black;
+      }
+
+      .cell input {
+        transition: background-color 300ms ease;
+        padding: 10px 6px;
+        font-size: 22px;
+        width: 100%;
+      }
+
+      .cell input.highlighted {
+        background-color: #F2CA5A;
       }
     </style>
   </head>

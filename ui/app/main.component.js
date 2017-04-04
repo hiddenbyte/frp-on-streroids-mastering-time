@@ -87,13 +87,13 @@ const mainComponent = buildComponent({
 
 rootComponent([
   mainComponent({}, [
-    cellComponent({ id: 'A1', store: store }),
-    cellComponent({ id: 'A2', store: store }),
-    cellComponent({ id: 'A3', store: store }),
-    cellComponent({ id: 'A4', store: store }),
-    cellComponent({ id: 'B1', store: store }),
-    cellComponent({ id: 'B2', store: store }),
-    cellComponent({ id: 'B3', store: store}),
-    cellComponent({ id: 'B4', store: store })
+    cellComponent({ id: 'A1' }),
+    cellComponent({ id: 'A2' }),
+    cellComponent({ id: 'A3' }),
+    cellComponent({ id: 'A4' }),
+    cellComponent({ id: 'B1' }),
+    cellComponent({ id: 'B2' }),
+    cellComponent({ id: 'B3' }),
+    cellComponent({ id: 'B4' })
   ])
 ]);

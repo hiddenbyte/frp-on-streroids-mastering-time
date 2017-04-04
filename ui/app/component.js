@@ -18,6 +18,7 @@ export function buildComponent(definition) {
     const componentElement = document.createElement('div');
     componentElement.innerHTML = definition.html(state);
     componentElement.className = definition.class;
+    console.log('df');
     const component = { elem : componentElement, childrens : childrenComponents };
 
     childrenComponents
